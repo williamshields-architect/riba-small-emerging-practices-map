@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>RIBA Small and Emerging Practices</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <style>
+    html, body { height: 100%; margin: 0; }
+    #map { height: 100%; }
+    .note {
+      position: absolute; z-index: 999; left: 12px; top: 12px;
+      background: rgba(255,255,255,0.95); padding: 10px 12px; border-radius: 10px;
+      max-width: 440px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; font-size: 13px;
+    }
+    .note h1 { font-size: 14px; margin: 0 0 6px 0; }
+    .note p { margin: 6px 0; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+
+<div class="note">
+  <h1>RIBA Small and Emerging Practices</h1>
+  <p>Pins use town/postcode-level coordinates (can refine to exact addresses anytime).</p>
+</div>
+
+<script>
+const map = L.map('map').setView([52.85, -1.2], 8);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+const practices = [
+  { name: "arch/FORM", address: "Shepshed, Loughborough", lat: 52.7700, lon: -1.2900 },
+  { name: "PASTE Architects", address: "Oakham, Rutland", lat: 52.6699, lon: -0.7333 },
+  { name: "Fiona Harrison", address: "West Bridgford, Nottingham", lat: 52.9230, lon: -1.1259 },
+  { name: "KR.eativ: Architects Ltd", address: "Kettering, Northamptonshire", lat: 52.3950, lon: -0.7247 },
+  { name: "Clare Nash Architecture", address: "Brackley, Northamptonshire", lat: 52.0333, lon: -1.1489 },
+  { name: "ADSDF Architects", address: "Harlaxton, NG32 1AG", lat: 52.883085, lon: -0.676168 },
+  { name: "Hayley Hammond Architects", address: "Woodhouse Eaves, nr Loughborough", lat: 52.724677, lon: -1.219367 },
+  { name: "Sexton Architecture", address: "Beeston, Nottingham", lat: 52.9163, lon: -1.2038 },
+  { name: "OSB ARCHITECTS", address: "Wollaton, Nottingham", lat: 52.9510, lon: -1.1950 },
+  { name: "OakenStone Design", address: "Cromford, Derbyshire", lat: 53.1086, lon: -1.5619 },
+  { name: "MAD Architects LLP", address: "Chesterfield, Derbyshire", lat: 53.2350, lon: -1.4270 },
+  { name: "Manning Holden Architects", address: "DE4 3HU (Matlock area)", lat: 53.1385, lon: -1.5550 },
+  { name: "Runcorn Architects", address: "Uppingham, LE15 9QB", lat: 52.6545, lon: -0.7266 },
+  { name: "Dwell Architects", address: "Stamford, Lincolnshire", lat: 52.6566, lon: -0.4794 },
+  { name: "Concept Zero Architects", address: "Market Harborough, Leicestershire", lat: 52.4801, lon: -0.9206 },
+  { name: "Simon Middlecote Architecture", address: "West Bridgford, Nottingham", lat: 52.9230, lon: -1.1259 },
+  { name: "StudioMA", address: "NN7 4RA, Northamptonshire", lat: 52.2360, lon: -0.9930 },
+  { name: "Feldmann Architects", address: "Leicester, LE2 3HB", lat: 52.6130, lon: -1.1250 },
+  { name: "ta Architecture", address: "West Bridgford, NG2 5AR", lat: 52.9180, lon: -1.1250 },
+  { name: "Old School Architects", address: "LN11 0LS", lat: 53.3669, lon: 0.0103 },
+  { name: "BRAMLEY-MAYE DESIGN", address: "Widmerpool / Stanton on the Wolds, NG12 5BS", lat: 52.8766, lon: -1.0884 },
+  { name: "Rachel Luckett Architecture", address: "Stony Stratford, Milton Keynes", lat: 52.0557, lon: -0.8516 }
+];
+
+const bounds = [];
+for (const p of practices) {
+  const popupHtml = `
+    <div style="font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;">
+      <div style="font-weight:700; margin-bottom:4px;">${p.name}</div>
+      <div style="font-size:12px;">${p.address}</div>
+    </div>
+  `;
+  L.marker([p.lat, p.lon]).addTo(map).bindPopup(popupHtml);
+  bounds.push([p.lat, p.lon]);
+}
+if (bounds.length) map.fitBounds(bounds, {padding: [40, 40]});
+</script>
+</body>
+</html>
